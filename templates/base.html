@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <script src="{% static 'JavaScript/main.js'%}"></script>
+    <title>
+        {% block title %}
+            Startup Organizer
+        {% endblock %}
+    </title>
+</head>
+<body>
+    <div>
+        <header>
+            <h1><a id="home-but" href="">Startup Organizer</a></h1>
+            <HR>
+        </header>
+        <nav>
+            <ul>
+                <li class="nav"><a class="nav" href="">Home</a></li>
+                <li class="nav"><a class="nav" href="{% url 'organizer_startup_list' %}">Startups</a></li>
+                <li class="nav"><a class="nav" href="{% url 'organizer_tag_list' %}">Tags</a></li>
+                <li class="nav"><a class="nav" href="{% url 'blog_post_list' %}">Blog</a></li>
+                                <li class="nav"><a class="nav" href="{% url 'contact' %}">Contact Us</a></li>
+            </ul>
+        </nav>
+        <div class="vl"></div>
+        <main>
+            {% block content %}
+                Default content
+            {% endblock %}
+            <br><br>
+            <br><br>
+        </main>
+    </div>
+</body>
+</html>

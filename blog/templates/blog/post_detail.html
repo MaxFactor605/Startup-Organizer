@@ -1,0 +1,64 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} - {{ post.title|title }}
+{% endblock %}
+
+{% block content %}
+    <article>
+        <section class="post-title">
+            <h2>{{ post.title|title }}</h2>
+            <p class="date">
+                Writeen on
+                <time class="date" datetime='{{ post.pub_date|date:"Y-m-d"}}'>
+                    {{ post.pub_date|date:"1, F j, Y" }}</time></p>
+        </section>
+        <p>{{ post.text|linebreaks }}</p>
+        <HR>
+        {% if post.startups.all or post.tags.all %}
+            <footer>
+                {% if post.startups.all %}
+                    <section>
+                        <h3>Startup{{ post.startups.count|pluralize }}</h3>
+                        <ul>
+                            {% for startup in post.startups.all %}
+                                <li><a href="{{ startup.get_absolute_url }}">{{ startup.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <HR>
+                    </section>
+                {% endif %}
+
+                {% if post.tags.all %}
+                    <section>
+                        <h3>Tag{{ post.tags.count|pluralize }}</h3>
+                        {% for tag in post.tags.all %}
+                            <a class="tags" href="{{ tag.get_absolute_url }}">{{ tag.name|title }}</a>
+                        {% endfor %}
+                    </section>
+                {% endif %}
+            </footer>
+        {% endif %}
+    </article>
+    <HR>
+    <div id="overlay">
+        <div id="pop-up">
+            <table>
+                <tr>
+                    <th colspan="2">
+                        <p id="pop-up-text">Are you sure you want to delete this post?</p>
+                    </th>
+                </tr>
+                <tr>
+                    <form action="{{ post.get_delete_url }}" method="POST">
+                        {% csrf_token %}
+                        <th><button class="button" type="submit">Delete</button></th>
+                        <th><button class="button" type="button" onclick="overlay()">Cancel</button> </th>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <a href="{{ post.get_update_url }}">Update Post</a>
+    <a class='delete-but' href="#" onclick="overlay()">Delete post</a>
+{% endblock %}

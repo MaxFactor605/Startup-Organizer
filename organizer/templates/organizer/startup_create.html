@@ -1,0 +1,35 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+{{ block.super }} - Startup Create
+{% endblock %}
+
+{% block content %}
+    <h2>New Startup</h2>
+    <HR>
+    <form action="{% url 'organizer_startup_create' %}" method="POST">
+        {% csrf_token %}
+            <table id="startup-form">
+                {% for field in form %}
+
+                    <tr>
+                        <th class="label">{{ field.label_tag }}</th>
+                        <th class="input">{{ field }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            {{ field.errors }}
+                        </th>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th colspan="2">
+                        <button class='button' type="submit">
+                            Create Startup
+                        </button>
+                    </th>
+                </tr>
+            </table>
+
+    </form>
+{% endblock %}

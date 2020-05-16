@@ -1,0 +1,60 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} - {{ tag.name|title }}
+{% endblock %}
+
+{% block content %}
+    <h2>{{ tag.name|title }}</h2>
+    <HR>
+    {% if tag.startup_set.all %}
+        <section>
+            <h3>Startups</h3>
+            <p class="count">There is {{ tag.startup_set.all.count }}
+                startup{{ tag.startup_set.all.count|pluralize }} here</p>
+            <ul>
+                {% for startup in tag.startup_set.all %}
+                    <li><a href="{{ startup.get_absolute_url }}">{{ startup.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% else %}
+        <h3>There is no Startups here :(</h3>
+    {% endif %}
+    <HR>
+    {% if tag.blog_posts.all %}
+        <section>
+            <h3>Blog Posts</h3>
+            <p class="count">There is {{ tag.blog_posts.all.count }}
+                post{{ tag.blog_posts.all.count|pluralize }} here</p>
+            <ul>
+                {% for post in tag.blog_posts.all %}
+                    <li><a href="{{ post.get_absolute_url }}">{{ post.title|title }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% else %}
+        <h3>There is no Posts here :(</h3>
+    {% endif %}
+    <HR>
+    <div id="overlay">
+        <div id="pop-up">
+            <table>
+                <tr>
+                    <th colspan="2">
+                        <p id="pop-up-text">Are you sure you want to delete this tag?</p>
+                    </th>
+                </tr>
+                <tr>
+                    <form action="{{ tag.get_delete_url }}" method="POST">
+                        {% csrf_token %}
+                        <th><button class="button" type="submit">Delete</button></th>
+                        <th><button class="button" type="button" onclick="overlay()">Cancel</button> </th>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <a href="{{ tag.get_update_url }}">Update</a>
+    <a class='delete-but' href="#" onclick="overlay()">Delete tag</a>
+{% endblock %}

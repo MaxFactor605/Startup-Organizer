@@ -1,0 +1,33 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+{{ block.super }} - Update startup
+{% endblock %}
+
+{% block content %}
+    <h2>Update Startup</h2>
+    <HR>
+    <form action="{{ startup.get_update_url }}" method="POST">
+       {% csrf_token %}
+            <table>
+                {% for field in form %}
+                    <tr>
+                        <th class="label">{{ field.label_tag }}</th>
+                        <th class="input">{{ field }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            {{ field.errors }}
+                        </th>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th colspan="2">
+                        <button class="button" type="submit">
+                            Update startup
+                        </button>
+                    </th>
+                </tr>
+            </table>
+    </form>
+{% endblock %}

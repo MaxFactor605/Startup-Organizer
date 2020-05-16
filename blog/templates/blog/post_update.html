@@ -1,0 +1,33 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+{{ block.super }} - Update Post
+{% endblock %}
+
+{% block content %}
+    <h2>Update Post</h2>
+    <HR>
+    <form action="{{ post.get_update_url }}" method="POST">
+       {% csrf_token %}
+            <table>
+                {% for field in form %}
+                    <tr>
+                        <th class="label">{{ field.label_tag }}</th>
+                        <th class="input">{{ field }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            {{ field.errors }}
+                        </th>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th colspan="2">
+                        <button type="submit">
+                            Update post
+                        </button>
+                    </th>
+                </tr>
+            </table>
+    </form>
+{% endblock %}

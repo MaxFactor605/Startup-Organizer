@@ -1,0 +1,24 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} - Tags
+{% endblock %}
+
+{% block content %}
+    <h2>Tag List</h2>
+    <HR>
+    {% if tag_list %}
+        <ul>
+            {% for tag in tag_list %}
+                <li><a href="{{ tag.get_absolute_url }}">{{ tag.name|title }}</a></li>
+            {% endfor %}
+        </ul>
+        <HR>
+        <a href="{% url 'organizer_tag_create' %}">Create new Tag</a>
+
+    {% else %}
+        <h3>There is empty here</h3>
+        <p><a href="">Add some tags!</a></p>
+    {% endif %}
+
+{% endblock %}

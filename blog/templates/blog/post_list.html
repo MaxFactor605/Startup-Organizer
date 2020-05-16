@@ -1,0 +1,28 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} - Posts
+{% endblock %}
+
+{% block content %}
+    <h2>Post List</h2>
+    <HR>
+    {% if post_list %}
+        {% for post in post_list %}
+            <article>
+                <section class="post-title">
+                    <h3 class="title">{{ post.title|title }}</h3>
+                    <p class="date">Written on: <time class = "date" datetime="{{ post.pub_date|date:'Y-m-d'">
+                        {{ post.pub_date|date:"l, F j, Y"}}</time></p>
+                </section>
+                <p class="post-text">{{ post.text|truncatewords:20 }}</p>
+                <p><a href="{{ post.get_absolute_url }}">Read more&hellip;</a></p>
+            </article>
+            <HR>
+        {% endfor %}
+        <a href="{% url 'blog_post_create' %}">Add Post</a>
+    {% else %}
+        <p>There is no posts here<br>
+        <a href="">Write something</a></p>
+    {% endif %}
+{% endblock %}

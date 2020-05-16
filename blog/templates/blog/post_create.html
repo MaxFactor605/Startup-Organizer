@@ -1,0 +1,33 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+{{ block.super }} - Post Create
+{% endblock %}
+
+{% block content %}
+    <h2>New Post</h2>
+    <HR>
+    <form action="{% url 'blog_post_create' %}" method="POST">
+        {% csrf_token %}
+            <table id='post-form'>
+                {% for field in form %}
+                    <tr>
+                        <th class="label">{{ field.label_tag }}</th>
+                        <th class="input">{{ field }}</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2">
+                            {{ field.errors }}
+                        </th>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <th colspan="2">
+                        <button class='button' type="submit">
+                            Create Blog Post
+                        </button>
+                    </th>
+                </tr>
+            </table>
+    </form>
+{% endblock %}

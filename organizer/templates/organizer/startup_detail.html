@@ -1,0 +1,77 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} - {{ startup.name }}
+{% endblock %}
+
+{% block content %}
+    <article>
+        <h2>{{ startup.name }}</h2>
+        <dl>
+            <dt class="startup-data-label">Date founded:</dt>
+                <dd class="startup-data">{{ startup.found_date|date:"F jS, Y" }}</dd>
+            <dt class="startup-data-label">Website:</dt>
+                <dd class="startup-data"><a href="{{ startup.website }}">{{ startup.website }}</a></dd>
+            <dt class="startup-data-label">Contact:</dt>
+                <dd class="startup-data">{{ startup.email }}</dd>
+            <dt class="startup-data-label">Tag{{ startup.tags.count|pluralize }}:</dt>
+                <dd class="startup-data">
+                    {% for tag in startup.tags.all %}
+                        <a class="tags" href="{{ tag.get_absolute_url }}">{{ tag.name|title }}</a>
+                    {% endfor %}
+                </dd>
+            <dt> </dt>
+        </dl>
+        <HR>
+        <h3>Description</h3>
+        <p>{{ startup.description|linebreaks }}</p>
+        <HR>
+        <section>
+            <h3>Recent News</h3>
+            {% if startup.newslink_set.all %}
+                <ul>
+                    {% for newslink in startup.newslink_set.all %}
+                        <li><a href="{{ newslink.link_to_article }}">{{ newslink.title|title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>There in no news from startup</p>
+            {% endif %}
+            <a href="{% url 'organizer_newslink_create' %}">Add Article</a>
+        </section>
+        <HR>
+        <section>
+            <h3>Blog post{{ startup.blog_posts.count|pluralize }}</h3>
+            {% if startup.blog_post.all %}
+                <ul>
+                    {% for post in startup.blog_posts.all %}
+                        <li><a href="{{ post.get_absolute_url }}">{{ post.title|title }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>There is no posts about {{ startup.name }}<br>
+            {% endif %}
+        </section>
+    </article>
+    <HR>
+    <div id="overlay">
+        <div>
+            <table id="pop-up">
+                <tr>
+                    <th colspan="2">
+                        <p id="pop-up-text">Are you sure you want to delete your startup?</p>
+                    </th>
+                </tr>
+                <tr>
+                    <form  action="{{ startup.get_delete_url }}" method="POST">
+                        {% csrf_token %}
+                        <th><button id="pop-up-but2" class="button" type="submit">Delete</button></th>
+                        <th><button id="pop-up-but1" class="button" type="button" onclick="overlay()">Cancel</button> </th>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <a href="{{ startup.get_update_url }}">Update</a>
+    <a class='delete-but' href="#" onclick="overlay()">Delete Startup</a>
+{% endblock %}

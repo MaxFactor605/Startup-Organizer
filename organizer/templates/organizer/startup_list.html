@@ -1,0 +1,22 @@
+{% extends parent_template|default:"base.html" %}
+
+{% block title %}
+    {{ block.super }} - Startups
+{% endblock %}
+
+{% block content %}
+    <h2>Startup List</h2>
+    <HR>
+    {% if startup_list %}
+        <ul>
+            {% for startup in startup_list %}
+            <li><a href="{{ startup.get_absolute_url }}">{{ startup.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <HR>
+        <a href="{% url 'organizer_startup_create' %}">Create new Startup</a>
+    {% else %}
+        <p>There is no startups here<br>
+        <a href="">Register your own startup!</a></p>
+    {% endif %}
+{% endblock %}
