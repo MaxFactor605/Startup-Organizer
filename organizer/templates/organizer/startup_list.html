@@ -10,10 +10,16 @@
     {% if startup_list %}
         <ul>
             {% for startup in startup_list %}
-            <li><a href="{{ startup.get_absolute_url }}">{{ startup.name }}</a></li>
+            <li><a class='list-link' href="{{ startup.get_absolute_url }}">
+                <div>
+                    <h3>{{ startup.name }}</h3>
+                    <p>{{ startup.description|truncatewords:20 }}</p>
+                </div>
+            </a></li>
+            <HR>
             {% endfor %}
         </ul>
-        <HR>
+        <br>
         <div class="page-id">
             {% if startup_list.has_other_pages %}
                 {% if startup_list.has_previous %}

@@ -94,7 +94,7 @@ header{
 nav{
 	margin-top: 41px;
 	list-style-type: none;
-	width: 7%;
+	width: 10%;
 	height: 100%;
 	float:left;
 	position: fixed;
@@ -107,7 +107,7 @@ th{
 main{
 	width: 92%;
 	float:left;
-	margin-left:7.5%;
+	margin-left:10.5%;
 	margin-top: 40px;
 }
 .count{
@@ -120,14 +120,11 @@ main{
 .post-title{
 	margin-bottom: 15px;
 }
-li{
-	margin: 10px;
-}
 .vl {
   border-left: 1px solid;
   height: 100%;
   position: absolute;
-  left:7%;
+  left:10%;
   top:40px;
   position: fixed;
 }
@@ -188,16 +185,18 @@ h3, h2{
 	background-color: white;
 }
 .nav {
+	font-size: 20px;
 	display: block;
 	width: 100%;
 	padding: 5px 0 5px 0;
 	margin: 0;
 	color: #595B5B;
 	transition-duration: 0.2s; 
+	padding-bottom: 2px;
 }
 
 .nav:hover{
-	background-color: #94e2ff;
+	background-color: #aefffa;
 	text-decoration: none;
 }
 header hr{
@@ -242,4 +241,18 @@ textarea{
  	width: 30px;
  	height: 30px;
  	margin-top: 5px;
+ }
+ hr{
+ 	margin: 0;
+ }
+ li, article{
+ 	margin: 2px;
+ 	padding: 5px;
+ }
+ li:hover, article:hover{
+ 	background-color: #E2E9EC;
+ }
+ .list-link:hover{
+ 	text-decoration: none;
+ 	background-color: #E2E9EC;
  }

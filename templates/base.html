@@ -19,11 +19,11 @@
         </header>
         <nav>
             <ul>
-                <li class="nav"><a class="nav" href="">Home</a></li>
-                <li class="nav"><a class="nav" href="{% url 'organizer_startup_list' %}">Startups</a></li>
-                <li class="nav"><a class="nav" href="{% url 'organizer_tag_list' %}">Tags</a></li>
-                <li class="nav"><a class="nav" href="{% url 'blog_post_list' %}">Blog</a></li>
-                                <li class="nav"><a class="nav" href="{% url 'contact' %}">Contact Us</a></li>
+                <li class="nav"><a class="nav" href=""><img src="{% static 'icons/home.png' %}">Home</a></li>
+                <li class="nav"><a class="nav" href="{% url 'organizer_startup_list' %}"><img src="{% static 'icons/rocket.png' %}">Startups</a></li>
+                <li class="nav"><a class="nav" href="{% url 'organizer_tag_list' %}"><img src="{% static 'icons/tag.png' %}">Tags</a></li>
+                <li class="nav"><a class="nav" href="{% url 'blog_post_list' %}"><img src="{% static 'icons/blog.png' %}">Blog</a></li>
+                <li class="nav"><a class="nav" href="{% url 'contact' %}"><img src="{% static 'icons/email.png' %}">Contact Us</a></li>
             </ul>
         </nav>
         <div class="vl"></div>
