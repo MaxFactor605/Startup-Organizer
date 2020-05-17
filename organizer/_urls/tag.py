@@ -6,5 +6,5 @@ urlpatterns = [
     re_path(r'/(?P<slug>[\w\-]+)/delete/$', TagDelete.as_view(), name='organizer_tag_delete'),
     path('/create/$', TagCreate.as_view(), name='organizer_tag_create'),
     re_path(r'/(?P<slug>[\w\-]+)/$', tag_detail, name='organizer_tag_detail'),
-    path('s/$', tag_list, name='organizer_tag_list'),
+    re_path(r'', tag_list, name='organizer_tag_list'),
 ]
