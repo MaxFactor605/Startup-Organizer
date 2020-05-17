@@ -3,7 +3,7 @@
 {% block title %}
     {{ block.super }} - Tags
 {% endblock %}
-
+{% load static %}
 {% block content %}
     <h2>Tag List</h2>
     <HR>
@@ -15,7 +15,17 @@
         </ul>
         <HR>
         <a href="{% url 'organizer_tag_create' %}">Create new Tag</a>
-
+        <div class="page-id">
+            {% if tag_list.has_other_pages %}
+                {% if tag_list.has_previous %}
+                    <a href="?page={{ tag_list.previous_page_number }}"><img src="{% static 'icons/icons8-previous-page-64.png' %}"></a>
+                {% endif %}
+                <p>Page {{ tag_list.number }} of {{ paginator.num_pages }}</p>
+                {% if tag_list.has_next %}
+                    <a href="?page={{ tag_list.next_page_number }}"><img src="{% static 'icons/icons8-next-page-64.png' %}"></a>
+                {% endif %}
+            {% endif %}
+        </div>
     {% else %}
         <h3>There is empty here</h3>
         <p><a href="">Add some tags!</a></p>

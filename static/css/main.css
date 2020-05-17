@@ -95,9 +95,10 @@ nav{
 	margin-top: 41px;
 	list-style-type: none;
 	width: 7%;
+	height: 100%;
 	float:left;
 	position: fixed;
-
+	background-color: white;
 
 }
 th{
@@ -225,4 +226,20 @@ input, textarea{
 textarea{
  	margin-bottom: 20px;
 
+ }
+ .page-id{
+ 	float: right;
+ 	margin-right: 20px;
+ 	width: 200px;
+ }
+ .page-id p{
+  	display: inline-block;
+  	vertical-align: top;
+  	margin: 5% 10%;
+  }
+ .page-id a{
+ 	display: inline-block;
+ 	width: 30px;
+ 	height: 30px;
+ 	margin-top: 5px;
  }

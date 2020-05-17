@@ -9,5 +9,5 @@ urlpatterns=[
             PostUpdate.as_view(), name='blog_post_update'),
     re_path(r'^post/(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<slug>[\w\-]+)/delete/$',
             PostDelete.as_view(), name='blog_post_delete'),
-    path('posts/', PostList.as_view(), {'parent_template' : 'base.html'}, name='blog_post_list'),
+    path('posts/', PostList.as_view(), name='blog_post_list'),
 ]

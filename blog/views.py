@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from .models import Post
 from django.views.generic import View
 from .forms import PostForm
-
+from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 
 def post_detail(request, year, month, slug, parent_template=None):
     post = get_object_or_404(Post, pub_date__year=year, pub_date__month=month, slug__iexact=slug)
@@ -27,9 +27,20 @@ class PostCreate(View):
 
 
 class PostList(View):
-    def get(self, request, parent_template=None):
-        return render(request, 'blog/post_list.html',
-                      context={'post_list': Post.objects.all(), 'parent_template' : parent_template})
+    page_kwarg = 'page'
+    paginate_by = 5
+    template_name = 'blog/post_list.html'
+
+    def get(self, request):
+        page_number = request.GET.get(self.page_kwarg)
+        paginator = Paginator(Post.objects.all(), self.paginate_by)
+        try:
+            page = paginator.page(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+        return render(request, self.template_name, context={'post_list': page, 'paginator': paginator})
 
 
 class PostUpdate(View):

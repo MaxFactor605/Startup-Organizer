@@ -2,17 +2,33 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.http.response import HttpResponse, Http404, HttpResponseRedirect
 from .models import Tag, Startup, NewsLink
 from django.template import loader
+from django.shortcuts import reverse
 from .forms import TagForm, StartupForm, NewsLinkForm
 from django.views.generic import View
 from .utils import ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def tag_detail(request, slug):
     tag = get_object_or_404(Tag, slug__iexact=slug)
     return render(request, 'organizer/tag_detail.html', context={'tag': tag})
 
 
-def tag_list(request):
-    return render(request, 'organizer/tag_list.html', context={'tag_list': Tag.objects.all()})
+class TagList(View):
+    template_name = 'organizer/tag_list.html'
+    paginate_by = 5
+    page_kwarg = 'page'
+
+
+    def get(self, request):
+        page_number = request.GET.get(self.page_kwarg)
+        paginator = Paginator(Tag.objects.all(), self.paginate_by)
+        try:
+            page = paginator.page(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+        return render(request, self.template_name, context={'tag_list': page, 'paginator': paginator})
 
 
 def startup_detail(request, slug):
@@ -20,8 +36,20 @@ def startup_detail(request, slug):
     return render(request, 'organizer/startup_detail.html', context={'startup': startup})
 
 
-def startup_list(request):
-    return render(request, 'organizer/startup_list.html', context={'startup_list': Startup.objects.all()})
+class StartupList(View):
+    page_kwarg = 'page'
+    paginate_by = 5
+    template_name = 'organizer/startup_list.html'
+    def get(self, request):
+        page_number = request.GET.get(self.page_kwarg)
+        paginator = Paginator(Startup.objects.all(), self.paginate_by)
+        try:
+            page = paginator.page(page_number)
+        except PageNotAnInteger:
+            page = paginator.page(1)
+        except EmptyPage:
+            page = paginator.page(paginator.num_pages)
+        return render(request, self.template_name, context={'startup_list': page, 'paginator': paginator})
 
 
 class TagCreate(ObjectCreateMixin, View):

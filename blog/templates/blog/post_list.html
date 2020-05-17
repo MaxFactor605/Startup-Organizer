@@ -3,7 +3,7 @@
 {% block title %}
     {{ block.super }} - Posts
 {% endblock %}
-
+{% load static %}
 {% block content %}
     <h2>Post List</h2>
     <HR>
@@ -21,6 +21,17 @@
             <HR>
         {% endfor %}
         <a href="{% url 'blog_post_create' %}">Add Post</a>
+        <div class="page-id">
+            {% if post_list.has_other_pages %}
+                {% if post_list.has_previous %}
+                    <a href="?page={{ post_list.previous_page_number }}"><img src="{% static 'icons/icons8-previous-page-64.png' %}"></a>
+                {% endif %}
+                <p>Page {{ post_list.number }} of {{ paginator.num_pages }}</p>
+                {% if post_list.has_next %}
+                    <a href="?page={{ post_list.next_page_number }}"><img src="{% static 'icons/icons8-next-page-64.png' %}"></a>
+                {% endif %}
+            {% endif %}
+        </div>
     {% else %}
         <p>There is no posts here<br>
         <a href="">Write something</a></p>
