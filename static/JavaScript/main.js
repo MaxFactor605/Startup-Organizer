@@ -5,6 +5,8 @@ function overlay() {
     el1.style.visibility = (el1.style.visibility == "visible") ? "hidden" : "visible";
     el1 = document.getElementById("pop-up-but2");
     el1.style.visibility = (el1.style.visibility == "visible") ? "hidden" : "visible";
+    el1 = document.getElementById("pop-up");
+    el1.style.visibility = (el1.style.visibility == "visible") ? "hidden" : "visible";
 }
 document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('select');

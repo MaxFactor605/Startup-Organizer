@@ -46,6 +46,7 @@ table {
 	font-family: sans-serif;
 	color: #595B5B;
 }
+
 p{
 	line-height: 1.5;
 }
@@ -85,7 +86,7 @@ a:hover{
 }
 header{
 	position: fixed;
-	background-color: #94e2ff;
+	background-color: #aefffa;
 	margin: 0;
 	height: 40px;
 	width: 100%;
@@ -96,6 +97,7 @@ nav{
 	width: 7%;
 	float:left;
 	position: fixed;
+
 
 }
 th{
@@ -144,16 +146,20 @@ h3, h2{
      width: 100%;
      height: 100%;
      z-index: 1000;
+     transition-duration: 0s; 
      background-color: rgba(0, 0, 0, 0.5);
 }
 #pop-up {
 	background-color: white;
 	position: absolute;
 	left: 40%;
+	transition-duration: 0s; 
 	top: 40%;
-	border: 2px solid;
 	border-radius: 15px;
 	padding: 10px;
+}
+#pop-up-but1, #pop-up-but2{
+	transition-duration: 0s; 
 }
 .delete-but{
 	float: right;
@@ -205,8 +211,8 @@ header hr{
 }
 select{
 	width: 200px;
-	border: 1px solid;
 	border-radius: 2px;
+	background-color: #c9ddff;
 }
 option{
 	transition-duration: 0.2s;
@@ -214,3 +220,12 @@ option{
 option:hover{
 	background-color: #94e2ff;
 }
+input, textarea{
+	background-color: #c9ddff;
+	border: none;
+	border-radius: 10px;
+}
+textarea{
+ 	margin-bottom: 20px;
+
+ }
