@@ -171,7 +171,6 @@ h3, h2{
 }
 .input{
 	text-align: left;
-	height: 50px;
 }
 .button{
 	background-color: #94e2ff;
@@ -212,7 +211,6 @@ header hr{
 select{
 	width: 200px;
 	border-radius: 2px;
-	background-color: #c9ddff;
 }
 option{
 	transition-duration: 0.2s;
@@ -221,8 +219,7 @@ option:hover{
 	background-color: #94e2ff;
 }
 input, textarea{
-	background-color: #c9ddff;
-	border: none;
+	
 	border-radius: 10px;
 }
 textarea{
