@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
+{% load flatpages %}
+{% get_flatpages as flatpages %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +16,7 @@
 <body>
     <div>
         <header>
-            <h1><a id="home-but" href="">Startup Organizer</a></h1>
+            <h1>Startup Organizer</h1>
             <HR>
         </header>
         <nav>
@@ -24,6 +26,9 @@
                 <li class="nav"><a class="nav" href="{% url 'organizer_tag_list' %}"><img src="{% static 'icons/tag.png' %}">Tags</a></li>
                 <li class="nav"><a class="nav" href="{% url 'blog_post_list' %}"><img src="{% static 'icons/blog.png' %}">Blog</a></li>
                 <li class="nav"><a class="nav" href="{% url 'contact' %}"><img src="{% static 'icons/email.png' %}">Contact Us</a></li>
+                {% for page in flatpages %}
+                    <li class="nav"><a class="nav" href="{{ page.get_absolute_url }}"><img src="{% static 'icons/about.png' %}">{{ page.title }}</a></li>
+                {% endfor %}
             </ul>
         </nav>
         <div class="vl"></div>

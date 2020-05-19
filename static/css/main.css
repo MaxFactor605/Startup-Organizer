@@ -76,14 +76,6 @@ a:hover{
 	background-color: #C3C3C3;
 	text-decoration: none;
 }
-#home-but{
-	color: #595B5B;
-}
-#home-but:hover{
-	color: #92A2A2;
-	text-decoration: none;
-	font-style: italic;
-}
 header{
 	position: fixed;
 	background-color: #aefffa;
@@ -94,7 +86,7 @@ header{
 nav{
 	margin-top: 41px;
 	list-style-type: none;
-	width: 10%;
+	width: 20%;
 	height: 100%;
 	float:left;
 	position: fixed;
@@ -105,9 +97,9 @@ th{
 	width:120px;
 }
 main{
-	width: 92%;
+	width: 79%;
 	float:left;
-	margin-left:10.5%;
+	margin-left:20.2%;
 	margin-top: 40px;
 }
 .count{
@@ -124,7 +116,7 @@ main{
   border-left: 1px solid;
   height: 100%;
   position: absolute;
-  left:10%;
+  left:20%;
   top:40px;
   position: fixed;
 }
@@ -185,14 +177,15 @@ h3, h2{
 	background-color: white;
 }
 .nav {
-	font-size: 20px;
+	height: 5%;
+	font-size: 25px;
 	display: block;
 	width: 100%;
 	padding: 5px 0 5px 0;
 	margin: 0;
 	color: #595B5B;
 	transition-duration: 0.2s; 
-	padding-bottom: 2px;
+	padding: 10px 0;
 }
 
 .nav:hover{
@@ -249,7 +242,7 @@ textarea{
  	margin: 2px;
  	padding: 5px;
  }
- li:hover, article:hover{
+ li:hover{
  	background-color: #E2E9EC;
  }
  .list-link:hover{

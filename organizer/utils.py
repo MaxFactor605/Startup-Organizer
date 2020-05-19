@@ -1,4 +1,15 @@
 from django.shortcuts import redirect, render, get_object_or_404
+from django.views import View
+class DetailView(View):
+    model = None
+    template_name = ''
+
+    def get_object(self, slug):
+        return get_object_or_404(self.model, slug__iexact=slug)
+
+    def get(self, request, slug):
+        obj = self.get_object(slug)
+        return render(request, self.template_name, context={self.model.__name__.lower(): obj})
 
 
 class ObjectCreateMixin:

@@ -1,23 +1,19 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http.response import HttpResponse, Http404, HttpResponseRedirect
 from .models import Tag, Startup, NewsLink
-from django.template import loader
-from django.shortcuts import reverse
 from .forms import TagForm, StartupForm, NewsLinkForm
 from django.views.generic import View
-from .utils import ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
+from .utils import DetailView, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-def tag_detail(request, slug):
-    tag = get_object_or_404(Tag, slug__iexact=slug)
-    return render(request, 'organizer/tag_detail.html', context={'tag': tag})
 
+class TagDetail(DetailView):
+    model = Tag
+    template_name = 'organizer/tag_detail.html'
 
 class TagList(View):
     template_name = 'organizer/tag_list.html'
-    paginate_by = 5
+    paginate_by = 15
     page_kwarg = 'page'
-
 
     def get(self, request):
         page_number = request.GET.get(self.page_kwarg)
@@ -31,15 +27,16 @@ class TagList(View):
         return render(request, self.template_name, context={'tag_list': page, 'paginator': paginator})
 
 
-def startup_detail(request, slug):
-    startup = get_object_or_404(Startup, slug__iexact=slug)
-    return render(request, 'organizer/startup_detail.html', context={'startup': startup})
+class StartupDetail(DetailView):
+    model = Startup
+    template_name = 'organizer/startup_detail.html'
 
 
 class StartupList(View):
     page_kwarg = 'page'
-    paginate_by = 5
+    paginate_by = 8
     template_name = 'organizer/startup_list.html'
+
     def get(self, request):
         page_number = request.GET.get(self.page_kwarg)
         paginator = Paginator(Startup.objects.all(), self.paginate_by)
@@ -89,6 +86,7 @@ class StartupDelete(ObjectDeleteMixin, View):
     model = Startup
     redirect_url = 'organizer_startup_list'
 
+
 class NewslinkDelete(ObjectDeleteMixin, View):
     model = NewsLink
 
@@ -96,10 +94,11 @@ class NewslinkDelete(ObjectDeleteMixin, View):
         return get_object_or_404(self.model, **kwargs)
 
     def post(self, request, **kwargs):
-        object = self.get_object(**kwargs)
-        redirect_link = object.get_absolute_url()
-        object.delete()
+        obj = self.get_object(**kwargs)
+        redirect_link = obj.get_absolute_url()
+        obj.delete()
         return redirect(redirect_link)
+
 
 class TagDelete(ObjectDeleteMixin, View):
     model = Tag
