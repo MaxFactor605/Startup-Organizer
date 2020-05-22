@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ block.super }} - {{ profile.user.get_username }}'s Profile
+{% endblock %}
+
+
+{% block content %}
+    <h2>{{ profile.user.get_username }}</h2>
+    <HR>
+    <p>{{ profile.about }}</p>
+    <HR>
+    {% if profile.published_posts|length > 0 %}
+        <div class="profile-posts">
+            <h3>New Published posts</h3>
+            <HR>
+            <ul>
+                {% for post in profile.published_posts %}
+                    <li><a class='list-link' href="{{ post.get_absolute_url }}">
+                            <section class="post-title">
+                                <h3 class="title">{{ post.title|title }}</h3>
+                                <p class="date">Written on: <time class = "date" datetime="{{ post.pub_date|date:'Y-m-d'">
+                                    {{ post.pub_date|date:"l, F j, Y"}}</time></p>
+                            </section>
+                    </a></li>
+                    <HR>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if profile.get_startups|length > 0 %}
+        <div class="profile-startups">
+            <h3>Startups</h3>
+            <HR>
+            <ul>
+                {% for startup in profile.get_startups %}
+
+                    <li><a class='list-link' href="{{ startup.get_absolute_url }}">
+                        <div>
+                            <h3>{{ startup.name }}</h3>
+                            <p>{{ startup.description|truncatewords:20 }}</p>
+                        </div>
+                    </a></li>
+                    <HR>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if user.pk == profile.user.pk %}
+        <a href="{{ profile.get_update_url }}">Edit Profile  </a>
+        <a href="{% url 'user_pw_change' %}">Change Password</a>
+        <a class='delete-but' href="{% url 'user_disable' %}">Disable Account</a>
+    {% endif %}
+{% endblock %}

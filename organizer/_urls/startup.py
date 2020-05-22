@@ -2,9 +2,9 @@ from organizer.views import StartupDetail, StartupList, StartupCreate, StartupUp
 from django.urls import path, re_path
 
 urlpatterns = [
-    re_path(r'(?P<slug>[\w\-]+)/delete/$', StartupDelete.as_view(), name='organizer_startup_delete'),
-    re_path(r'(?P<slug>[\w\-]+)/update/$', StartupUpdate.as_view(), name='organizer_startup_update'),
+    path('<slug>/delete/', StartupDelete.as_view(), name='organizer_startup_delete'),
+    path('<slug>/update/', StartupUpdate.as_view(), name='organizer_startup_update'),
     path('create', StartupCreate.as_view(), name='organizer_startup_create'),
-    re_path(r'(?P<slug>[\w\-]+)/$', StartupDetail.as_view(), name='organizer_startup_detail'),
+    path('<slug>/', StartupDetail.as_view(), name='organizer_startup_detail'),
     path('', StartupList.as_view(), name='organizer_startup_list'),
 ]

@@ -4,11 +4,15 @@ from .forms import TagForm, StartupForm, NewsLinkForm
 from django.views.generic import View
 from .utils import DetailView, ObjectCreateMixin, ObjectUpdateMixin, ObjectDeleteMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.decorators import login_required
 
 
 class TagDetail(DetailView):
     model = Tag
     template_name = 'organizer/tag_detail.html'
+
 
 class TagList(View):
     template_name = 'organizer/tag_list.html'
@@ -49,14 +53,17 @@ class StartupList(View):
         return render(request, self.template_name, context={'startup_list': page, 'paginator': paginator})
 
 
+@method_decorator(permission_required('organizer.add_tag', raise_exception=True), name='get')
 class TagCreate(ObjectCreateMixin, View):
     form_class = TagForm
     template_name = 'organizer/tag_create.html'
 
 
+@method_decorator(permission_required('organizer.add_startup', raise_exception=True), name='get')
 class StartupCreate(ObjectCreateMixin, View):
     form_class = StartupForm
     template_name = 'organizer/startup_create.html'
+
 
 
 class NewsLinkCreate(ObjectCreateMixin, View):
@@ -70,21 +77,25 @@ class NewsLinkUpdate(ObjectUpdateMixin, View):
     template_name = 'organizer/newslink_update.html'
 
 
+@method_decorator(permission_required('organizer.change_startup', raise_exception=True), name='get')
 class StartupUpdate(ObjectUpdateMixin, View):
     form_class = StartupForm
     model = Startup
     template_name = 'organizer/startup_update.html'
 
 
+@method_decorator(permission_required('organizer.change_tag', raise_exception=True), name='get')
 class TagUpdate(ObjectUpdateMixin, View):
     form_class = TagForm
     model = Tag
     template_name = 'organizer/tag_update.html'
 
 
+@method_decorator(permission_required('organizer.delete_startup', raise_exception=True), name='post')
 class StartupDelete(ObjectDeleteMixin, View):
     model = Startup
     redirect_url = 'organizer_startup_list'
+
 
 
 class NewslinkDelete(ObjectDeleteMixin, View):
@@ -100,6 +111,7 @@ class NewslinkDelete(ObjectDeleteMixin, View):
         return redirect(redirect_link)
 
 
+@method_decorator(permission_required('organizer.delete_tag', raise_exception=True), name='post')
 class TagDelete(ObjectDeleteMixin, View):
     model = Tag
     redirect_url = 'organizer_tag_list'

@@ -1,0 +1,11 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+{{ block.super }} - Reset Password
+{% endblock %}
+
+{% block content %}
+	<h3>Password changed</h3>
+	<p>Log in with your new password {% include 'user/login.html %}</p>
+{% endblock %}

@@ -38,8 +38,8 @@
     {% endif %}
     <HR>
     <div id="overlay">
-        <div id="pop-up">
-            <table>
+        <div>
+            <table id="pop-up">
                 <tr>
                     <th colspan="2">
                         <p id="pop-up-text">Are you sure you want to delete this tag?</p>
@@ -48,13 +48,17 @@
                 <tr>
                     <form action="{{ tag.get_delete_url }}" method="POST">
                         {% csrf_token %}
-                        <th><button class="button" type="submit">Delete</button></th>
-                        <th><button class="button" type="button" onclick="overlay()">Cancel</button> </th>
+                        <th><button id="pop-up-but2" class="button" type="submit">Delete</button></th>
+                        <th><button id="pop-up-but1" class="button" type="button" onclick="overlay()">Cancel</button> </th>
                     </form>
                 </tr>
             </table>
         </div>
     </div>
-    <a href="{{ tag.get_update_url }}">Update</a>
-    <a class='delete-but' href="#" onclick="overlay()">Delete tag</a>
+    {% if perms.change_tag %}
+        <a href="{{ tag.get_update_url }}">Update</a>
+    {% endif %}
+    {% if perms.delete_tag %}
+        <a class='delete-but' href="#" onclick="overlay()">Delete tag</a>
+    {% endif %}
 {% endblock %}

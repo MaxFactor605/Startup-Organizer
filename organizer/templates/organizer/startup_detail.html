@@ -10,6 +10,8 @@
         <dl>
             <dt class="startup-data-label">Date founded:</dt>
                 <dd class="startup-data">{{ startup.found_date|date:"F jS, Y" }}</dd>
+            <dt class="startup-data-label">Founder:</dt>
+                <dd class="startup-data"><a href="{{ startup.owner.profile.get_absolute_url }}">{{ startup.owner.get_username }}</a></dd>
             <dt class="startup-data-label">Website:</dt>
                 <dd class="startup-data"><a href="{{ startup.website }}">{{ startup.website }}</a></dd>
             <dt class="startup-data-label">Contact:</dt>
@@ -37,7 +39,9 @@
             {% else %}
                 <p>There in no news from startup</p>
             {% endif %}
-            <a href="{% url 'organizer_newslink_create' %}">Add Article</a>
+            {% if perms.change_startup %}
+                <a href="{% url 'organizer_newslink_create' %}">Add Article</a>
+            {% endif %}
         </section>
         <HR>
         <section>
@@ -72,6 +76,10 @@
             </table>
         </div>
     </div>
-    <a href="{{ startup.get_update_url }}">Update</a>
-    <a class='delete-but' href="#" onclick="overlay()">Delete Startup</a>
+    {% if perms.change_startup %}
+        <a href="{{ startup.get_update_url }}">Update</a>
+    {% endif %}
+    {% if perms.delete_startup %}
+        <a class='delete-but' href="#" onclick="overlay()">Delete Startup</a>
+    {% endif %}
 {% endblock %}

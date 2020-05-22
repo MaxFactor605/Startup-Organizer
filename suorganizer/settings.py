@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 import os
 from pathlib import Path
+from .log_filters import ManagmentFilter
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -25,7 +27,10 @@ SECRET_KEY = 'm15(!engh08!wl#z#06s^#e+&2#n^_#ozm21)wrynjrzbo&f9e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.109']
+ALLOWED_HOSTS = [
+    '192.168.0.109',
+    '127.0.0.1',
+                 ]
 
 
 # Application definition
@@ -37,11 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.flatpages',
     'django.contrib.sites',
     'suorganizer',
     'organizer',
     'blog',
+    'user',
     'contact',
     'core',
 ]
@@ -57,7 +62,40 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+verbose = (
+    "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(messages)s"
+)
+"""
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+      'remove_migration_sql': {
+          '()': ManagmentFilter
+      }
+    },
+    'handlers': {
+        'console': {
+            'filters': ['remove_migration_sql'],
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'formatters': {
+        'verbose':{
+            'format': verbose,
+            'datefmt': '%Y-%b-%d %H:%M:%S',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers' : ['console'],
+            'level': 'DEBUG',
+            'formatter': 'verbose',
+        },
 
+    },
+}
+"""
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -105,10 +143,20 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# Login Settings
+LOGIN_URL = reverse_lazy('user_login')
+LOGIN_REDIRECT_URL = reverse_lazy('blog_post_list')
+LOGOUT_URL = reverse_lazy('user_logout')
 
+# Email Settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'alexandow.maxim1@gmail.com'
+EMAIL_HOST_PASSWORD = 'All5671234'
 SERVER_EMAIL = 'contact@test.com'
-DEFAULT_FROM_EMAIL = 'no-reply@test.com'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'alexandow.maxim1@gmail.com'
 EMAIL_SUBJECT_PREFIX = '[Startup Organizer]'
 MANAGERS = (
     ('Us', 'ourselves@test.com'),

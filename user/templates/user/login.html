@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+{{ block.super }} - login
+{% endblock %}
+
+
+{% block content %}
+    <h2>Login</h2>
+    <HR>
+    {% if messages %}
+        {% for mess in messages %}
+            <p>{{ mess }}</p>
+        {% endfor %}
+    {% endif %}
+    <form action="{% url 'user_login' %}" method="POST">
+        {% csrf_token %}
+        <table>
+            {% for field in form %}
+                <tr>
+                    <th><p class="label">{{ field.label_tag }}</p></th>
+                    <th><p class="input">{{ field }}</p></th>
+                </tr>
+            {% endfor %}
+
+        <tr>
+            <th colspan="2"><button class='button' type="submit">Log in</button></th>
+        </tr>
+        </table>
+        <a href="{% url 'user_pw_reset_start' %}">Forgotten password?</a>
+        <a href="{% url 'user_activate_resend' %}">Lost activation email?</a>
+    </form>
+{% endblock %}

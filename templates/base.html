@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 {% load static %}
-{% load flatpages %}
-{% get_flatpages as flatpages %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,9 +24,20 @@
                 <li class="nav"><a class="nav" href="{% url 'organizer_tag_list' %}"><img src="{% static 'icons/tag.png' %}">Tags</a></li>
                 <li class="nav"><a class="nav" href="{% url 'blog_post_list' %}"><img src="{% static 'icons/blog.png' %}">Blog</a></li>
                 <li class="nav"><a class="nav" href="{% url 'contact' %}"><img src="{% static 'icons/email.png' %}">Contact Us</a></li>
-                {% for page in flatpages %}
-                    <li class="nav"><a class="nav" href="{{ page.get_absolute_url }}"><img src="{% static 'icons/about.png' %}">{{ page.title }}</a></li>
-                {% endfor %}
+                <li class="nav"><a class="nav" href="{% url 'about_site' %}"><img src="{% static 'icons/about.png' %}">About</a></li>
+                <li class="nav">
+                    <a class='nav' href="{% url 'user_profile' %}">
+                    <div class="profile">
+                        {% if user.is_authenticated %}
+                            <p><img src="{% static 'icons/account.png' %}">{{ user.username }}</p>
+                            <a href="{% url 'user_logout' %}">Log Out</a>
+                        {% else %}
+                            <p><img src="{% static 'icons/account.png' %}">Not Authorized</p>
+                            <a href="{% url 'user_login' %}">Log in</a> or <a href="{% url 'user_create' %}">Register</a>
+                        {% endif %}
+                    </div>
+                    </a>
+                </li>
             </ul>
         </nav>
         <div class="vl"></div>

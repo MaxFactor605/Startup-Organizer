@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ block.super }} - Change Password
+{% endblock %}
+
+{% block content %}
+	<h2>Change password</h2>
+	<HR>
+	<form action="{% url 'user_pw_change' %}" method="POST">
+		{% csrf_token %}
+		<table>
+			{% for field in form %}
+				<tr>
+					<th colspan='2'>
+						<p class='label'>{{ field.label_tag}}</p>
+						<p class='input'>{{ field }}</p>
+					</th>
+				</tr>
+				<tr>
+					{% for error in field.errors %}
+						<th colspan='2'>
+							{{ error }}
+						</th>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+			<tr>
+				<th colspan='2'>
+					<button class='button', type='submit'>
+						Change
+					</button>
+				</th>
+			</tr>
+		</table>
+	</form>
+
+{% endblock %}

@@ -1,6 +1,8 @@
 from organizer.views import TagDetail, TagList, TagDelete, TagUpdate, TagCreate
 from django.urls import path, re_path
 
+
+
 urlpatterns = [
     re_path(r'(?P<slug>[\w\-]+)/update/$', TagUpdate.as_view(), name='organizer_tag_update'),
     re_path(r'(?P<slug>[\w\-]+)/delete/$', TagDelete.as_view(), name='organizer_tag_delete'),

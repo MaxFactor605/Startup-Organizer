@@ -1,0 +1,48 @@
+ 
+{% extends 'base.html' %}
+
+{% block title %}
+{{ block.super }} - Reset Password
+{% endblock %}
+
+{% block content %}
+	{% if validlink %}
+		<h2>Password Reset</h2>
+		<HR>
+		<form action='{{ request.paht }}' method='POST'>
+		{% csrf_token %}
+		<table>
+			{% for field in form %}
+				<tr>
+					<th colspan='2'>
+						<p class='label'>{{ field.label_tag}}</p>
+						<p class='input'>{{ field }}</p>
+					</th>
+				</tr>
+				<tr>
+					{% for error in field.errors %}
+						<th colspan='2'>
+							{{ error }}
+						</th>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+			<tr>
+				<th colspan='2'>
+					<button class='button', type='submit'>
+						Reset
+					</button>
+				</th>
+			</tr>
+		</table>
+
+		</form>
+
+
+	{% else %}
+		<p>This reset link is no longet valid</p>
+		<p>Please request a new reset email 
+			<a href="{% url 'user_pw_reset_start'}">here</a></p>
+
+	{% endif %}
+{% endblock %}

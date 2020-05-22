@@ -124,6 +124,7 @@ main{
 h1{
 	margin: 0;
 	height: 100%;
+	text-align: center;
 }
 h3, h2{
 	margin: 10px 0;
@@ -235,9 +236,6 @@ textarea{
  	height: 30px;
  	margin-top: 5px;
  }
- hr{
- 	margin: 0;
- }
  li, article{
  	margin: 2px;
  	padding: 5px;
@@ -248,4 +246,7 @@ textarea{
  .list-link:hover{
  	text-decoration: none;
  	background-color: #E2E9EC;
+ }
+ li.archive{
+ 	display: inline-block;
  }

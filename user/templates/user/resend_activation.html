@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ block.super }} - Resend Activation
+{% endblock %}
+
+{% block content %}
+	<h2>Resend Activation</h2>
+	<HR>
+	<form action="{% url 'user_activate_resend' %}" method="POST">
+		{% csrf_token %}
+		<table>
+			{% for field in form %}
+				<tr>
+					<th colspan='2'>
+						<p class='label'>{{ field.label_tag}}</p>
+						<p class='input'>{{ field }}</p>
+					</th>
+				</tr>
+				<tr>
+					{% for error in field.errors %}
+						<th colspan='2'>
+							{{ error }}
+						</th>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+			<tr>
+				<th colspan='2'>
+					<button class='button' type='submit'>
+						Resend
+					</button>
+				</th>
+			</tr>
+		</table>
+	</form>
+	{% if messages %}
+		<ul class="messages">
+    		{% for message in messages %}
+    		<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    	{% endfor %}
+		</ul>
+{% endif %}
+
+{% endblock %} 
+ 

@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from django.conf import settings
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True, help_text='Tag name')
@@ -30,6 +30,7 @@ class Startup(models.Model):
     email = models.EmailField(help_text='Tell how to contact with you!')
     website = models.URLField(max_length=255, help_text='Your best startup website')
     tags = models.ManyToManyField(Tag, blank=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='startups', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

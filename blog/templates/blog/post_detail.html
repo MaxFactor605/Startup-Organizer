@@ -8,10 +8,10 @@
     <article>
         <section class="post-title">
             <h2>{{ post.title|title }}</h2>
-            <p class="date">
+            <a class="date">
                 Writeen on
                 <time class="date" datetime='{{ post.pub_date|date:"Y-m-d"}}'>
-                    {{ post.pub_date|date:"1, F j, Y" }}</time></p>
+                    {{ post.pub_date|date:"1, F j, Y" }}</time> and by <a href="{{ post.author.profile.get_absolute_url }}">{{ post.author.get_username }}</a></p>
         </section>
         <p>{{ post.text|linebreaks }}</p>
         <HR>
@@ -52,13 +52,17 @@
                 <tr>
                     <form action="{{ post.get_delete_url }}" method="POST">
                         {% csrf_token %}
-                        <th><button class="button" type="submit">Delete</button></th>
-                        <th><button class="button" type="button" onclick="overlay()">Cancel</button> </th>
+                        <th><button id="pop-up-but1" class="button" type="submit">Delete</button></th>
+                        <th><button id="pop-up-but2" class="button" type="button" onclick="overlay()">Cancel</button> </th>
                     </form>
                 </tr>
             </table>
         </div>
     </div>
-    <a href="{{ post.get_update_url }}">Update Post</a>
-    <a class='delete-but' href="#" onclick="overlay()">Delete post</a>
+    {% if user.is_authenticated %}
+        {% if user.pk == 4 or user.pk == post.author.pk %}
+            <a href="{{ post.get_update_url }}">Update Post</a>
+            <a class='delete-but' href="#" onclick="overlay()">Delete post</a>
+        {% endif %}
+    {% endif %}
 {% endblock %}

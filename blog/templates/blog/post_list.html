@@ -5,7 +5,12 @@
 {% endblock %}
 {% load static %}
 {% block content %}
-    <h2>Post List</h2>
+    <h2>Post List {{ year }}</h2>
+    <ul class="archive">
+        {% for year in dates.reverse %}
+            <li class="archive"><a href="{{ year.year }}">{{ year.year }}</a></li>
+        {% endfor %}
+    </ul>
     <HR>
     {% if post_list %}
         {% for post in post_list %}
@@ -24,7 +29,6 @@
             </ul>
         {% endfor %}
         <br>
-        <a href="{% url 'blog_post_create' %}">Add Post</a>
         <div class="page-id">
             {% if post_list.has_other_pages %}
                 {% if post_list.has_previous %}
@@ -36,9 +40,10 @@
                 {% endif %}
             {% endif %}
         </div>
-
     {% else %}
         <p>There is no posts here<br>
-        <a href="">Write something</a></p>
+    {% endif %}
+    {% if 'blog.add_post' in user.get_user_permissions %}
+        <a href="{% url 'blog_post_create' %}">Add Post</a>
     {% endif %}
 {% endblock %}
