@@ -61,8 +61,8 @@ class ActivateAccount(View):
 
 class CreateAccount(MailContextViewMixin, View):
 	form_class = UserCreationForm
-	success_url = reverse_lazy('user_create_done')
-	template_name = 'user/login.html'
+	success_url = reverse_lazy('user_login')
+	template_name = 'user/user_create.html'
 
 	@method_decorator(csrf_protect)
 	def get(self, request):
