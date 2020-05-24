@@ -14,4 +14,3 @@ DATABASES = {
     'default': dj_database_url.config()
 }
 
-'8$2(j1asy+2t113v%7%#qdntydt_@voxs3rz#7)&2u+66i!y0f'

@@ -24,7 +24,7 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 SECRET_KEY = 'm15(!engh08!wl#z#06s^#e+&2#n^_#ozm21)wrynjrzbo&f9e'
 

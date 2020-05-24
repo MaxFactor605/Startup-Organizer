@@ -74,13 +74,13 @@ class CreateAccount(MailContextViewMixin, View):
 		bound_form = self.form_class(request.POST)
 		if bound_form.is_valid():
 			bound_form.save(**self.get_save_kwargs(request))
-			if bound_form.mail_sent:
-				return redirect(self.success_url)
-			else:
-				errs = (bound_form.non_field_errors())
-				for err in errs:
-					error(request, err)
-					return redirect('user_activate_resend')
+			#if bound_form.mail_sent:
+			return redirect(self.success_url)
+			#else:
+				#errs = (bound_form.non_field_errors())
+				#for err in errs:
+					#error(request, err)
+					#return redirect('user_activate_resend')
 
 		return TemplateResponse(request, self.template_name, context={'form': bound_form})
 
