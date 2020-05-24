@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="alternate" title='Blog News RSS' type='application/rss+xml' href="{% url 'blog_rss_feed' %}">
+     <link rel="alternate" title='Blog News Atom' type='application/atom+xml' href="{% url 'blog_atom_feed' %}">
     <script src="{% static 'JavaScript/main.js'%}"></script>
     <title>
         {% block title %}
@@ -42,6 +44,13 @@
         </nav>
         <div class="vl"></div>
         <main>
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
             {% block content %}
                 Default content
             {% endblock %}

@@ -1,0 +1,62 @@
+[
+{
+  "model": "user.profile",
+  "pk": 1,
+  "fields": {
+    "user": 4,
+    "slug": "maxfactor",
+    "about": "xyecoc",
+    "joined": "2020-05-22T14:10:39.228Z"
+  }
+},
+{
+  "model": "user.profile",
+  "pk": 2,
+  "fields": {
+    "user": 2,
+    "slug": "hirai-momo",
+    "about": "Twice Momo",
+    "joined": "2020-05-22T14:10:39.228Z"
+  }
+},
+{
+  "model": "user.profile",
+  "pk": 3,
+  "fields": {
+    "user": 3,
+    "slug": "minatozaki-sana",
+    "about": "Twice Sana",
+    "joined": "2020-05-22T14:10:39.228Z"
+  }
+},
+{
+  "model": "user.profile",
+  "pk": 4,
+  "fields": {
+    "user": 35,
+    "slug": "chaeyoung",
+    "about": "Twice Chaeyoung",
+    "joined": "2020-05-22T14:10:39.228Z"
+  }
+},
+{
+  "model": "user.profile",
+  "pk": 6,
+  "fields": {
+    "user": 38,
+    "slug": "bound-method-abstractbaseuserget_username-of-user-nayeon",
+    "about": "",
+    "joined": "2020-05-22T14:22:55.864Z"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "contributors",
+    "permissions": [
+      37
+    ]
+  }
+}
+]

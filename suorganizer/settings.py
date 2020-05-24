@@ -16,6 +16,7 @@ from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+FIXTURE_DIRS = (os.path.join(BASE_DIR, 'fixtures'),)
 
 
 # Quick-start development settings - unsuitable for production
@@ -27,26 +28,31 @@ SECRET_KEY = 'm15(!engh08!wl#z#06s^#e+&2#n^_#ozm21)wrynjrzbo&f9e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = [
     '192.168.0.109',
     '127.0.0.1',
                  ]
 
-
+INTERNAL_IPS =[
+    '127.0.0.1',
+]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
     'django.contrib.sites',
+    'user',
+    'django.contrib.sitemaps',
+    'django.contrib.admin',
     'suorganizer',
     'organizer',
     'blog',
-    'user',
     'contact',
     'core',
 ]
@@ -54,13 +60,16 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
+    'django.middleware.cache.UpdateCacheMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 verbose = (
     "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(messages)s"
@@ -96,17 +105,29 @@ LOGGING = {
     },
 }
 """
+#Caches
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+CACHE_MIDDLEWARE_ALIAS = 'default'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
-        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+            ],
+            'loaders': [#('django.template.loaders.cached.Loader', [
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+                #])
             ],
         },
     },

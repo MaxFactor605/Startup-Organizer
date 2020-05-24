@@ -1,0 +1,27 @@
+<form action="{{ action }}" method="{{ method|default:'post' }}">
+		{% csrf_token %}
+		<table>
+			{% for field in form %}
+				<tr>
+					<th colspan='2'>
+						<p class='label'>{{ field.label_tag}}</p>
+						<p class='input'>{{ field }}</p>
+					</th>
+				</tr>
+				<tr>
+					{% for error in field.errors %}
+						<th colspan='2'>
+							{{ error }}
+						</th>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+			<tr>
+				<th colspan='2'>
+					<button class='button'  type='submit'>
+                        {{ button|default:'Submit'}}
+					</button>
+				</th>
+			</tr>
+		</table>
+	</form>

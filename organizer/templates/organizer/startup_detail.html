@@ -3,7 +3,8 @@
 {% block title %}
     {{ block.super }} - {{ startup.name }}
 {% endblock %}
-
+{% load obfuscate_email %}
+{% load partial_post_list %}
 {% block content %}
     <article>
         <h2>{{ startup.name }}</h2>
@@ -15,13 +16,19 @@
             <dt class="startup-data-label">Website:</dt>
                 <dd class="startup-data"><a href="{{ startup.website }}">{{ startup.website }}</a></dd>
             <dt class="startup-data-label">Contact:</dt>
-                <dd class="startup-data">{{ startup.email }}</dd>
-            <dt class="startup-data-label">Tag{{ startup.tags.count|pluralize }}:</dt>
-                <dd class="startup-data">
-                    {% for tag in startup.tags.all %}
-                        <a class="tags" href="{{ tag.get_absolute_url }}">{{ tag.name|title }}</a>
-                    {% endfor %}
-                </dd>
+                <dd class="startup-data">{{ startup.email|obfuscate }}</dd>
+            <dt class="startup-data-label">Feeds:</dt>
+                <dd class="startup-data"><a href="{{ startup.get_feed_atom_url }}">Atom</a></dd>
+                <dd class="startup-data"><a href="{{ startup.get_feed_rss_url }}">RSS</a></dd>
+
+            {% with tag_list=startup.tags.all %}
+                <dt class="startup-data-label">Tag{{ tag_list|pluralize }}:</dt>
+                    <dd class="startup-data">
+                        {% for tag in tag_list %}
+                            <a class="tags" href="{{ tag.get_absolute_url }}">{{ tag.name|title }}</a>
+                        {% endfor %}
+                    </dd>
+            {% endwith %}
             <dt> </dt>
         </dl>
         <HR>
@@ -29,32 +36,32 @@
         <p>{{ startup.description|linebreaks }}</p>
         <HR>
         <section>
-            <h3>Recent News</h3>
-            {% if startup.newslink_set.all %}
-                <ul>
-                    {% for newslink in startup.newslink_set.all %}
-                        <li><a href="{{ newslink.link_to_article }}">{{ newslink.title|title }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>There in no news from startup</p>
-            {% endif %}
-            {% if perms.change_startup %}
-                <a href="{% url 'organizer_newslink_create' %}">Add Article</a>
-            {% endif %}
+            {% with newslink_list=startup.newslink_set.all %}
+                <h3>Recent News</h3>
+                {% if newslink_list %}
+                    <ul>
+                        {% for newslink in newslink_list %}
+                            <li><a href="{{ newslink.link_to_article }}">{{ newslink.title|title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>There in no news from startup</p>
+                {% endif %}
+                {% if perms.change_startup %}
+                    <a href="{% url 'organizer_newslink_create' %}">Add Article</a>
+                {% endif %}
+            {% endwith %}
         </section>
         <HR>
         <section>
-            <h3>Blog post{{ startup.blog_posts.count|pluralize }}</h3>
-            {% if startup.blog_post.all %}
-                <ul>
-                    {% for post in startup.blog_posts.all %}
-                        <li><a href="{{ post.get_absolute_url }}">{{ post.title|title }}</a></li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>There is no posts about {{ startup.name }}<br>
-            {% endif %}
+            {% with post_list=startup.blog_posts.all %}
+                <h3>Blog post{{ post_list|pluralize }}</h3>
+                {% if post_list %}
+                    {% format_post_list post_list %}
+                {% else %}
+                    <p>There is no posts about {{ startup.name }}<br>
+                {% endif %}
+            {% endwith %}
         </section>
     </article>
     <HR>

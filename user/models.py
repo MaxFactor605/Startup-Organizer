@@ -17,7 +17,7 @@ class Profile(models.Model):
         return self.user.blog_posts.filter(pub_date__month=date.today().month, pub_date__year=date.today().year)
 
     def get_update_url(self):
-        return reverse('user_profile')
+        return reverse('user_profile_update')
 
     def get_absolute_url(self):
         return reverse('user_pub_profile', kwargs={'slug': self.slug})

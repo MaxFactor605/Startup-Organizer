@@ -34,7 +34,7 @@ class TagList(View):
 class StartupDetail(DetailView):
     model = Startup
     template_name = 'organizer/startup_detail.html'
-
+    queryset = (Startup.objects.all().prefetch_related('tags').prefetch_related('newslink_set'))
 
 class StartupList(View):
     page_kwarg = 'page'

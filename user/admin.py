@@ -14,7 +14,6 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import AdminPasswordChangeForm
 from .models import Profile
 
-
 admin.site.unregister(get_user_model())
 
 class ProfileAdminInline(admin.StackedInline):
@@ -24,7 +23,6 @@ class ProfileAdminInline(admin.StackedInline):
 
     def view_on_site(self, obj):
         return obj.get_absolute_url()
-
 
 
 @admin.register(get_user_model())
@@ -123,6 +121,5 @@ class UserAdmin(admin.ModelAdmin):
         if obj is None:
             return tuple()
         inline_instance = ProfileAdminInline(self.model, self.admin_site)
-        return inline_instance
-
+        return (inline_instance,)
 

@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from urllib.parse import urlparse
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True, help_text='Tag name')
@@ -32,6 +34,12 @@ class Startup(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='startups', on_delete=models.CASCADE)
 
+    def get_feed_atom_url(self):
+        return reverse('organizer_startup_atom_feed', kwargs={'startup_slug': self.slug})
+
+    def get_feed_rss_url(self):
+        return reverse('organizer_startup_rss_feed', kwargs={'startup_slug': self.slug})
+
     def __str__(self):
         return self.name
 
@@ -56,6 +64,9 @@ class NewsLink(models.Model):
     link_to_article = models.URLField(max_length=255)
     pub_date = models.DateField(verbose_name='Date published', auto_now_add=True)
     startup = models.ForeignKey(Startup, on_delete=models.CASCADE)
+
+    def description(self):
+        return ('Written on {0:%A, %B} {0.day}, {0:%Y}; hosted at {1}'.format(self.pub_date, urlparse(self.link_to_article).netloc))
 
     def __str__(self):
         return '{0} : {1}'.format(self.startup, self.title)

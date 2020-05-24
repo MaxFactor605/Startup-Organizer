@@ -3,31 +3,10 @@
 {% block title %}
 {{ block.super }} - Post Create
 {% endblock %}
-
+{% load display_form %}
 {% block content %}
     <h2>New Post</h2>
     <HR>
-    <form action="{% url 'blog_post_create' %}" method="POST">
-        {% csrf_token %}
-            <table id='post-form'>
-                {% for field in form %}
-                    <tr>
-                       <th colspan="2"><p class="label">{{ field.label_tag }}</p>
-                            <p class="input">{{ field }}</p></th>
-                    </tr>
-                    <tr>
-                        <th colspan="2">
-                            {{ field.errors }}
-                        </th>
-                    </tr>
-                {% endfor %}
-                <tr>
-                    <th colspan="2">
-                        <button class='button' type="submit">
-                            Create Blog Post
-                        </button>
-                    </th>
-                </tr>
-            </table>
-    </form>
+    {% url 'blog_post_create' as form_url %}
+    {% form form_url 'Create' %}
 {% endblock %}

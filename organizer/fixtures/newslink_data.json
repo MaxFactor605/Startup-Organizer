@@ -1,0 +1,35 @@
+[
+{
+  "model": "organizer.newslink",
+  "pk": 2,
+  "fields": {
+    "title": "Redundant Homepage Link",
+    "slug": "redundant-homepage-link",
+    "link_to_article": "http://jambonsw.com",
+    "pub_date": "2020-05-15",
+    "startup": 5
+  }
+},
+{
+  "model": "organizer.newslink",
+  "pk": 3,
+  "fields": {
+    "title": "Monkey (Wikipedia)",
+    "slug": "monkey-wikipedia",
+    "link_to_article": "https://en.wikipedia.org/wiki/Monkey",
+    "pub_date": "2020-05-15",
+    "startup": 7
+  }
+},
+{
+  "model": "organizer.newslink",
+  "pk": 4,
+  "fields": {
+    "title": "William Shakespeare (Wikipedia)",
+    "slug": "william-shakespeare-wikipedia",
+    "link_to_article": "https://en.wikipedia.org/wiki/William_Shakespeare",
+    "pub_date": "2020-05-15",
+    "startup": 7
+  }
+}
+]

@@ -9,11 +9,6 @@
 {% block content %}
     <h2>Login</h2>
     <HR>
-    {% if messages %}
-        {% for mess in messages %}
-            <p>{{ mess }}</p>
-        {% endfor %}
-    {% endif %}
     <form action="{% url 'user_login' %}" method="POST">
         {% csrf_token %}
         <table>
