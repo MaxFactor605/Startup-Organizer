@@ -34,17 +34,17 @@ class UserCreationForm(ActivationMailFormMixin, BaseUserCreationForm):
 
     def save(self, **kwargs):
         user = super().save(commit=False)
-        if not user.pk:
-            user.is_active = False
-            send_mail = True
-        else:
-            send_mail = False
+        #if not user.pk:
+            #user.is_active = False
+            #send_mail = True
+       # else:
+            #send_mail = False
 
         user.save()
         self.save_m2m()
         Profile.objects.update_or_create(user=user, slug=slugify(user.get_username))
-        if send_mail:
-            self.send_mail(user=user, **kwargs)
+        #if send_mail:
+            #self.send_mail(user=user, **kwargs)
         return user
 
 
