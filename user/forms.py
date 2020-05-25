@@ -42,8 +42,8 @@ class UserCreationForm(ActivationMailFormMixin, BaseUserCreationForm):
 
         user.save()
         self.save_m2m()
-        Profile.objects.update_or_create(user=user, slug=slugify(user.get_username), about=' ')
-        
+        Profile.objects.create(user=user, slug=slugify(user.get_username), about=' ')
+
         #if send_mail:
             #self.send_mail(user=user, **kwargs)
         return user
