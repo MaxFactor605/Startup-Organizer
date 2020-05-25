@@ -55,10 +55,10 @@
             </table>
         </div>
     </div>
-    {% if perms.change_tag %}
-        <a href="{{ tag.get_update_url }}">Update</a>
-    {% endif %}
-    {% if perms.delete_tag %}
-        <a class='delete-but' href="#" onclick="overlay()">Delete tag</a>
-    {% endif %}
+    {% if user.is_authenticated %}
+        {% if user.is_superuser %}
+            <a href="{{ tag.get_update_url }}">Update</a>
+            <a class='delete-but' href="#" onclick="overlay()">Delete tag</a>
+        {% endif %}
+    [% endif %}
 {% endblock %}

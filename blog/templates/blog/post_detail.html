@@ -8,7 +8,7 @@
     <article>
         <section class="post-title">
             <h2>{{ post.title|title }}</h2>
-            <a class="date">
+            <p class="date">
                 Writeen on
                 <time class="date" datetime='{{ post.pub_date|date:"Y-m-d"}}'>
                     {{ post.pub_date|date:"1, F j, Y" }}</time> and by <a href="{{ post.author.profile.get_absolute_url }}">{{ post.author.get_username }}</a></p>
@@ -60,7 +60,7 @@
         </div>
     </div>
     {% if user.is_authenticated %}
-        {% if user.pk == 4 or user.pk == post.author.pk %}
+        {% if user.is_superuser or user.pk == post.author.pk %}
             <a href="{{ post.get_update_url }}">Update Post</a>
             <a class='delete-but' href="#" onclick="overlay()">Delete post</a>
         {% endif %}

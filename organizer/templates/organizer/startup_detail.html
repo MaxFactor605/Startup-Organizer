@@ -47,8 +47,11 @@
                 {% else %}
                     <p>There in no news from startup</p>
                 {% endif %}
-                {% if perms.change_startup %}
-                    <a href="{% url 'organizer_newslink_create' %}">Add Article</a>
+                <br>
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser or user.pk == post.author.pk %}
+                        <a href="{% url 'organizer_newslink_create' %}">Add Article</a>
+                    {% endif %}
                 {% endif %}
             {% endwith %}
         </section>
@@ -83,10 +86,10 @@
             </table>
         </div>
     </div>
-    {% if perms.change_startup %}
-        <a href="{{ startup.get_update_url }}">Update</a>
-    {% endif %}
-    {% if perms.delete_startup %}
-        <a class='delete-but' href="#" onclick="overlay()">Delete Startup</a>
+    {% if user.is_authenticated %}
+        {% if user.is_superuser or user.pk == startup.owner.pk %}
+            <a href="{{ startup.get_update_url }}">Update</a>
+            <a class='delete-but' href="#" onclick="overlay()">Delete Startup</a>
+        {% endif %}
     {% endif %}
 {% endblock %}

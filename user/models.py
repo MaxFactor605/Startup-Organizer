@@ -9,7 +9,7 @@ UserModel = get_user_model()
 class Profile(models.Model):
     user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=30, unique=True)
-    about = models.TextField(blank=True)
+    about = models.TextField()
     joined = models.DateTimeField('Date Joined', auto_now_add=True)
 
     def get_startups(self):

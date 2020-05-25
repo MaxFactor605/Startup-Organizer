@@ -1,6 +1,6 @@
 from .base import *
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '192.168.0.109',
@@ -16,9 +16,9 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-MIDDLEWARE += [
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-]
+#MIDDLEWARE += [
+#   'debug_toolbar.middleware.DebugToolbarMiddleware',
+#]
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',

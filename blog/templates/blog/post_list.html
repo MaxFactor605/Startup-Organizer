@@ -43,7 +43,7 @@
     {% else %}
         <p>There is no posts here<br>
     {% endif %}
-    {% if 'blog.add_post' in user.get_user_permissions %}
+    {% if 'blog.add_post' in user.get_all_permissions %}
         <a href="{% url 'blog_post_create' %}">Add Post</a>
     {% endif %}
 {% endblock %}

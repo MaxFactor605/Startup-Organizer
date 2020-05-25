@@ -34,7 +34,7 @@
     {% else %}
         <p>There is no startups here</p>
     {% endif %}
-    {% if perms.add_startup %}
+    {% if 'organizer.add_startup' in user.get_all_permissions %}
         <a href="{% url 'organizer_startup_create' %}">Create new Startup</a>
     {% endif %}
 {% endblock %}
