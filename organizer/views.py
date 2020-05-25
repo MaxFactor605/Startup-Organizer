@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.decorators import login_required
-
+from django.core.exceptions import PermissionDenied
 
 class TagDetail(DetailView):
     model = Tag
@@ -35,6 +35,7 @@ class StartupDetail(DetailView):
     model = Startup
     template_name = 'organizer/startup_detail.html'
     queryset = (Startup.objects.all().prefetch_related('tags').prefetch_related('newslink_set'))
+
 
 class StartupList(View):
     page_kwarg = 'page'
@@ -77,12 +78,29 @@ class NewsLinkUpdate(ObjectUpdateMixin, View):
     template_name = 'organizer/newslink_update.html'
 
 
-@method_decorator(permission_required('organizer.change_startup', raise_exception=True), name='get')
 class StartupUpdate(ObjectUpdateMixin, View):
     form_class = StartupForm
     model = Startup
     template_name = 'organizer/startup_update.html'
 
+    def get(self, request, **kwargs):
+        object = self.get_object(**kwargs)
+        if request.user.pk == object.owner.pk or request.user.is_superuser():
+            return render(request, self.template_name, context={'form': self.form_class(instance=object), self.model.__name__.lower(): object})
+        else:
+            raise PermissionDenied
+
+    def post(self, request, **kwargs):
+        object = self.get_object(**kwargs)
+        if request.user.pk == object.owner.pk or request.user.is_superuser():
+            bound_form = self.form_class(request.POST, instance=object)
+            if bound_form.is_valid():
+                new_link = bound_form.save()
+                return redirect(new_link)
+            else:
+                return render(request, self.template_name, context={'form': bound_form, self.model.__name__.lower(): object})
+        else:
+            raise PermissionDenied
 
 @method_decorator(permission_required('organizer.change_tag', raise_exception=True), name='get')
 class TagUpdate(ObjectUpdateMixin, View):
@@ -91,11 +109,18 @@ class TagUpdate(ObjectUpdateMixin, View):
     template_name = 'organizer/tag_update.html'
 
 
-@method_decorator(permission_required('organizer.delete_startup', raise_exception=True), name='post')
+
 class StartupDelete(ObjectDeleteMixin, View):
     model = Startup
     redirect_url = 'organizer_startup_list'
 
+    def post(self, request, **kwargs):
+        object = self.get_object(**kwargs)
+        if request.user.pk == object.owner.pk or request.user.is_superuser():
+            object.delete()
+            return redirect(self.redirect_url)
+        else:
+            raise PermissionDenied
 
 
 class NewslinkDelete(ObjectDeleteMixin, View):
@@ -106,10 +131,13 @@ class NewslinkDelete(ObjectDeleteMixin, View):
 
     def post(self, request, **kwargs):
         obj = self.get_object(**kwargs)
-        redirect_link = obj.get_absolute_url()
-        obj.delete()
-        return redirect(redirect_link)
+        if request.user.pk == obj.startup.owner.pk or request.user.is_superuser():
 
+            redirect_link = obj.get_absolute_url()
+            obj.delete()
+            return redirect(redirect_link)
+        else:
+            raise PermissionDenied
 
 @method_decorator(permission_required('organizer.delete_tag', raise_exception=True), name='post')
 class TagDelete(ObjectDeleteMixin, View):

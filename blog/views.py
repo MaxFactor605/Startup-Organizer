@@ -7,6 +7,7 @@ from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from .utils import PostFormValidMixin
+from django.core.exceptions import PermissionDenied
 
 
 def post_detail(request, year, month, slug, parent_template=None):
@@ -67,7 +68,6 @@ class PostList(View):
         return render(request, self.template_name, context={'post_list': page, 'paginator': paginator, 'dates': years})
 
 
-@method_decorator(permission_required('blog.change_post', raise_exception=True), name='get')
 class PostUpdate(PostFormValidMixin, View):
     form_class = PostForm
     model = Post
@@ -79,20 +79,24 @@ class PostUpdate(PostFormValidMixin, View):
 
     def get(self, request, year, month, slug):
         post = self.get_object(year, month, slug)
-        return render(request, self.template_name, context={'form': self.form_class(instance=post), 'post': post})
-
+        if request.user.pk == post.author.pk or request.user.is_superuser():
+            return render(request, self.template_name, context={'form': self.form_class(instance=post), 'post': post})
+        else:
+            raise PermissionDenied
 
     def post(self, request, year, month, slug):
         post = self.get_object(year, month, slug)
-        bound_form = self.form_class(request.POST, instance=post)
-        if bound_form.is_valid():
-            new_post = bound_form.save(request)
-            return redirect(new_post)
+        if request.user.pk == post.author.pk or request.user.is_superuser():
+            bound_form = self.form_class(request.POST, instance=post)
+            if bound_form.is_valid():
+                new_post = bound_form.save(request)
+                return redirect(new_post)
+            else:
+                return render(request, self.template_name, context={'form': bound_form, 'post': post})
         else:
-            return render(request, self.template_name, context={'form': bound_form, 'post': post})
+            raise PermissionDenied
 
 
-@method_decorator(permission_required('blog.delete_post', raise_exception=True), name='post')
 class PostDelete(View):
     model = Post
 
@@ -102,5 +106,8 @@ class PostDelete(View):
 
     def post(self, request, year, month, slug):
         post = self.get_object(year, month, slug)
-        post.delete()
-        return redirect('blog_post_list')
+        if request.user.pk == post.author.pk or request.user.is_superuser():
+            post.delete()
+            return redirect('blog_post_list')
+        else:
+            raise PermissionDenied
