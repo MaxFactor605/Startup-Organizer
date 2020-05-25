@@ -1,17 +1,15 @@
-from django.conf.urls import include
 from user import urls as auth_urls
 from django.contrib import admin
-from django.urls import path, re_path
 from organizer import urls as organizer_urls
 from blog import urls as blog_urls
 from contact import urls as contact_urls
 from django.views.generic import TemplateView, RedirectView
 from django.conf import settings
-from django.urls import include, path
+from django.urls import include, path, re_path
 from blog.feeds import AtomPostFeed, Rss2PostFeed
 from django.contrib.sitemaps.views import index as site_index_view, sitemap as sitemap_view
 from .sitemaps import sitemaps as sitemaps_dict
-
+from django.conf.urls.static import static
 
 sitenews = [
     path('atom/', AtomPostFeed(), name='blog_atom_feed'),
@@ -29,8 +27,10 @@ urlpatterns = [
     path('sitenews/', include(sitenews)),
     re_path(r'^sitemap\.xml$', site_index_view, {'sitemaps': sitemaps_dict}, name='sitemap'),
     re_path(r'^sitemap-(?P<section>.+)\.xml$', sitemap_view, {'sitemaps': sitemaps_dict}, name='sitemaps_sections'),
-
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [

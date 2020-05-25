@@ -16,6 +16,7 @@ from django.contrib.messages import error, success
 from django.contrib.auth.tokens import default_token_generator as token_generator
 from .utils import MailContextViewMixin, ProfileGetObjectMixin
 from .models import Profile
+from django.contrib.auth.models import Group
 from organizer.utils import ObjectUpdateMixin
 
 class DisableAccount(View):
@@ -52,6 +53,7 @@ class ActivateAccount(View):
 			user = None
 		if user is not None and token_generator.check_token(user, token):
 			user.is_active = True
+			user.groups.set([Group.objects.get(name='Average_user')])
 			user.save()
 			success(request, 'User activated, you may login now')
 			return redirect(self.success_url)
@@ -61,7 +63,7 @@ class ActivateAccount(View):
 
 class CreateAccount(MailContextViewMixin, View):
 	form_class = UserCreationForm
-	success_url = reverse_lazy('user_login')
+	success_url = reverse_lazy('user_create_done')
 	template_name = 'user/user_create.html'
 
 	@method_decorator(csrf_protect)
@@ -73,14 +75,14 @@ class CreateAccount(MailContextViewMixin, View):
 	def post(self, request):
 		bound_form = self.form_class(request.POST)
 		if bound_form.is_valid():
-			bound_form.save(request=request)
-			#if bound_form.mail_sent:
-			return redirect(self.success_url)
-			#else:
-				#errs = (bound_form.non_field_errors())
-				#for err in errs:
-					#error(request, err)
-					#return redirect('user_activate_resend')
+			bound_form.save(**self.get_save_kwargs(request))
+			if bound_form.mail_sent:
+				return redirect(self.success_url)
+			else:
+				errs = (bound_form.non_field_errors())
+				for err in errs:
+					error(request, err)
+					return redirect('user_activate_resend')
 
 		return TemplateResponse(request, self.template_name, context={'form': bound_form})
 

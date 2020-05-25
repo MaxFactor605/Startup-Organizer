@@ -3,14 +3,18 @@ from django.conf import settings
 from django.urls import reverse
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from datetime import date
-from django.contrib.auth import get_user_model
-UserModel = get_user_model()
-
+from PIL import Image
 class Profile(models.Model):
-    user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=30, unique=True)
     about = models.TextField()
     joined = models.DateTimeField('Date Joined', auto_now_add=True)
+    pic = models.ImageField(default='profile.jpg')
+
+    def resize_profile_pic(self):
+        img = Image.open(self.pic.path)
+        img = img.resize((200,200))
+        img.save(self.pic.path)
 
     def get_startups(self):
         return self.user.startups.all()

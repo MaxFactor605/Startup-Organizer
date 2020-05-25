@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from .utils import ActivationMailFormMixin
 from django import forms
+from django.contrib.auth.models import Group
 logger = logging.getLogger(__name__)
 
 class UserCreationForm(ActivationMailFormMixin, BaseUserCreationForm):
@@ -33,18 +34,20 @@ class UserCreationForm(ActivationMailFormMixin, BaseUserCreationForm):
         return username
 
     def save(self, **kwargs):
-        user = super().save(commit=True)
-        #if not user.pk:
-            #user.is_active = False
-            #send_mail = True
-       # else:
-            #send_mail = False
-        #user.save()
-        #self.save_m2m()
-        Profile.objects.update_or_create(user=user, slug=slugify(user.get_username()), about=' ')
+        user = super().save(commit=False)
+        if not user.pk:
+            user.is_active = False
+            send_mail = True
+        else:
+            send_mail = False
 
-        #if send_mail:
-            #self.send_mail(user=user, **kwargs)
+
+        user.save()
+        self.save_m2m()
+        Profile.objects.update_or_create(user=user, slug=slugify(user.get_username))
+
+        if send_mail:
+            self.send_mail(user=user, **kwargs)
         return user
 
 
@@ -74,7 +77,7 @@ class ProfileUpdateForm(forms.ModelForm):
 
     class Meta():
         model = Profile
-        fields = ('about',)
+        fields = ('about', 'pic')
 
 
 class UserChangeForm(BaseUserChangeForm):
