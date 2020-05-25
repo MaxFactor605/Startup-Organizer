@@ -3,9 +3,11 @@ from django.conf import settings
 from django.urls import reverse
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from datetime import date
+from django.contrib.auth import get_user_model
+UserModel = get_user_model()
 
 class Profile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.OneToOneField(UserModel, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=30, unique=True)
     about = models.TextField(blank=True)
     joined = models.DateTimeField('Date Joined', auto_now_add=True)
