@@ -7,7 +7,7 @@ from datetime import date
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     slug = models.SlugField(max_length=30, unique=True)
-    about = models.TextField()
+    about = models.TextField(blank=True)
     joined = models.DateTimeField('Date Joined', auto_now_add=True)
 
     def get_startups(self):
