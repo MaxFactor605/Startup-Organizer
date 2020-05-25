@@ -33,15 +33,15 @@ class UserCreationForm(ActivationMailFormMixin, BaseUserCreationForm):
         return username
 
     def save(self, **kwargs):
-        user = super().save(commit=False)
+        user = super().save(commit=True)
         #if not user.pk:
             #user.is_active = False
             #send_mail = True
        # else:
             #send_mail = False
 
-        user.save()
-        self.save_m2m()
+        #user.save()
+        #self.save_m2m()
         Profile.objects.create(user=user, slug=slugify(user.get_username), about=' ')
 
         #if send_mail:
